@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComicZone - Thế giới truyện tranh</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+  body {
+    background-color: #fdf6f9;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  #loginMessage {
+    display: none;
+    position: fixed;  /* Dùng fixed để giữ thông báo trên cùng */
+    top: 20px;  /* Khoảng cách từ trên cùng */
+    left: 50%;  /* Đặt ở giữa màn hình */
+    transform: translateX(-50%);  /* Dịch chuyển để chính giữa */
+    z-index: 1000;
+    background-color: #28a745;  /* Màu nền xanh lá */
+    color: white;  /* Màu chữ trắng */
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);  /* Đổ bóng nhẹ */
+    width: auto; /* Chiều rộng tự động */
+    max-width: 250px;  /* Giới hạn chiều rộng */
+    text-align: center;  /* Căn giữa chữ */
+    box-sizing: border-box;
+}
+
+#loginMessage.alert-success {
+    background-color: #28a745;  /* Xanh lá cho thông báo thành công */
+}
+
+#loginMessage.alert-danger {
+    background-color: #dc3545;  /* Đỏ cho thông báo lỗi */
+}
+.user-logged-in {
+  font-weight: bold;  /* Chữ đậm */
+  color: #007bff;     /* Màu sắc khác biệt (xanh lam) */
+  font-size: 18px;    /* Kích thước chữ lớn hơn */
+  text-transform: uppercase;  /* Chữ in hoa */
+  padding: 8px 12px;  /* Thêm khoảng cách */
+}
+
+/* Thêm hiệu ứng hover cho mục đăng nhập */
+.user-logged-in:hover {
+  color: #0056b3;   /* Đổi màu khi hover */
+  text-decoration: underline;  /* Gạch chân khi hover */
+}
+  .bg-light {
+    background-color: #ffd5df !important ;
+  }
+
+  .navbar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .navbar-brand {
+    font-weight: bold;
+    color: #c2185b !important;
+  }
+  .nav-link {
+    color: #c2185b;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    background: linear-gradient(120deg, #fce4ec, #f8bbd0);
+    padding: 5rem 0;
+    border-radius: 20px;
+  }
+
+  /* Tabs */
+  .nav-tabs .nav-link.active {
+    background-color: #c2185b;
+    color: white;
+    border: none;
+  }
+  .nav-tabs .nav-link {
+    color: #c2185b;
+  }
+
+  /* Product Card */
+  .product-card {
+    margin-top: 35px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background-color: #fff;
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  }
+  .card-body h5 {
+    color: #880e4f;
+  }
+
+  /* Buttons */
+  .btn-danger {
+    background-color: #c2185b;
+    border-color: #c2185b;
+  }
+  .btn-outline-danger {
+    color: #c2185b;
+    border-color: #c2185b;
+  }
+  .btn-outline-danger:hover {
+    background-color: #c2185b;
+    color: white;
+  }
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: rgba(255, 0, 0, 0.801); /* nền đen mờ */
+    background-size: 100% 100%;
+    border-radius: 50%;
+    padding: 20px;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 5%;
+  }
+  .description {
+    display: block;
+    height:1.5em;            /* Giới hạn chiều cao tương ứng với số dòng (1.5em x 3 dòng) */
+    overflow: hidden;         /* Ẩn phần thừa khi văn bản dài quá */
+    text-overflow: ellipsis;  /* Hiển thị dấu '...' */
+    line-height: 1.5em;       /* Điều chỉnh độ cao dòng */
+    white-space: nowrap;      /* Ngăn không cho văn bản tự xuống dòng */
+  }
+  
+  
+ /* Footer */
+.footer {
+  background-color: hsl(346, 100%, 75%) !important ;
+  padding: 3rem 0;
+  margin-top: 4rem;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+}
+
+.footer h5 {
+  color: white;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.footer p, .footer ul {
+  color: white;
+}
+
+.footer a {
+  text-decoration: none;
+  color: white;
+}
+
+.footer a:hover {
+  color: #c2185b;
+}
+
+.footer .row {
+  margin-bottom: 2rem;
+}
+
+.footer .bi {
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.footer .bi:hover {
+  color: #c2185b;
+}
+
+.footer hr {
+  border-top: 1px solid #ffffff;
+}
+
+@media (max-width: 767px) {
+  .footer .row {
+    text-align: center;
+  }
+
+  .footer .bi {
+    font-size: 2rem;
+  }
+}
+
+
+  /* Tab content container spacing */
+  .tab-pane {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+  }
+
+  /* Badge (new, sale...) */
+  .badge {
+    font-size: 0.8rem;
+    padding: 0.5em 0.7em;
+  }
+  
+</style>
+
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="../FE/img/logo.png" alt="Logo" class="me-2" style="height: 40px;">
+        <span class="fw-bold">ComicStore</span>
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="Home.html">Trang chủ</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+              Thể loại
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Hành động</a></li>
+              <li><a class="dropdown-item" href="#">Lãng mạn</a></li>
+              <li><a class="dropdown-item" href="#">Hài hước</a></li>
+              <li><a class="dropdown-item" href="#">Phiêu lưu</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Tất cả truyện</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Khuyến mãi</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Liên hệ</a>
+          </li>
+          <li class="nav-item dropdown" id="userDropdown" style="display: none;">
+            <a class="nav-link dropdown-toggle" href="#" id="userNameLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <!-- Tên người dùng sẽ được thay đổi từ "Đăng nhập" thành tên người dùng -->
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="userNameLink">
+                <li><a class="dropdown-item" href="#" id="logoutLink">Đăng xuất</a></li>
+            </ul>
+        </li>
+        
+        <li class="nav-item" id="loginLinkItem">
+            <a class="nav-link" href="auth.html" id="loginLink">Đăng nhập</a>
+        </li>
+        
+        </ul>
+
+        <!-- Search -->
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Tìm kiếm truyện..." aria-label="Search">
+          <button class="btn btn-outline-danger" type="submit">Tìm</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Tabs -->
+  <div class="container mt-4">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#home">Trang chủ</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#popular">Phổ biến</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#new">Mới phát hành</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#sale">Giảm giá</button>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <!-- Home Tab -->
+      <div class="tab-pane fade show active" id="home">
+        <div class="hero-section text-center my-4 rounded py-4 px-3" style="background: linear-gradient(135deg, #fce4ec, #f8bbd0);">
+          <div class="container">
+            <h1 class="mb-4">🔥 Truyện Hot Nhất Hiện Nay</h1>
+            <div id="hotComicsCarousel" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+        
+                <!-- Slide 1: 3 truyện -->
+                <div class="carousel-item active">
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <div class="card h-100 shadow-sm">
+                        <img src="./img/luffy.jpg" class="card-img-top" alt="One Piece">
+                        <div class="card-body">
+                          <h5 class="card-title">One Piece</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="card h-100 shadow-sm">
+                        <img src="./img/naruto.jpg" class="card-img-top" alt="Naruto">
+                        <div class="card-body">
+                          <h5 class="card-title">Naruto</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="card h-100 shadow-sm">
+                        <img src="./img/Doraemon.jpg" class="card-img-top" alt="Doraemon">
+                        <div class="card-body">
+                          <h5 class="card-title">Doraemon</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        
+                <!-- Slide 2: 3 truyện kế tiếp -->
+                <div class="carousel-item">
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <div class="card h-100 shadow-sm">
+                        <img src="./img/Titan.jpg" class="card-img-top" alt="Attack on Titan">
+                        <div class="card-body">
+                          <h5 class="card-title">Attack on Titan</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="card h-100 shadow-sm">
+                        <img src="./img/Dragon.jpg" class="card-img-top" alt="Dragon Ball">
+                        <div class="card-body">
+                          <h5 class="card-title">Dragon Ball</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="card h-100 shadow-sm">
+                        <img src="./img/Yaiba.jpg" class="card-img-top" alt="Kimetsu no Yaiba">
+                        <div class="card-body">
+                          <h5 class="card-title">Kimetsu no Yaiba</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+              <!-- Nút điều hướng -->
+              <button class="carousel-control-prev" type="button" data-bs-target="#hotComicsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#hotComicsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <h2 class="mb-4">Truyện nổi bật</h2>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="card product-card">
+              <a href="View.html" class="card-link">
+                <img src="./img/conan.jpg" class="card-img-top" alt="Detective Conan">
+                <div class="card-body">
+              </a>
+                  <h5 class="card-title">Thám tử Conan Tập 100</h5>
+                  <p class="card-text text-danger fw-bold">45.000đ</p>
+                  <p class="card-text description">
+                    Trong suốt chặng đường gần 30 năm đồng hành cùng với nhiều thế hệ độc giả Việt, Thám tử lừng danh Conan là một trong những nhân vật truyện tranh vô cùng nổi bật và không ngừng được yêu thích cho đến tận hôm nay. Từng tập truyện một vẫn được tác giả Gosho Aoyama gửi đến người hâm mộ một cách đều đặn, và cuối cùng thì hành trình phá án của Conan đã vượt mốc 100 tập truyện.
+                  </p>
+                  <a href="#" class="btn btn-danger btn-sm">Thêm vào giỏ</a>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card product-card">
+              <div class="badge bg-warning position-absolute top-0 end-0 m-2">-20%</div>
+              <img src="./img/Dspecial.jpg" class="card-img-top" alt="Doraemon">
+              <div class="card-body">
+                <h5 class="card-title">Doraemon và bản giao hưởng địa cầu</h5>
+                <p class="card-text"><del class="text-muted">60.000đ</del> <span class="text-danger fw-bold">48.000đ</span></p>
+                <a href="#" class="btn btn-danger btn-sm">Thêm vào giỏ</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card product-card">
+              <div class="badge bg-danger position-absolute top-0 end-0 m-2">MỚI</div>
+              <img src="./img/Kaisen.jpg" class="card-img-top" alt="Jujutsu Kaisen">
+              <div class="card-body">
+                <h5 class="card-title">Jujutsu Kaisen Tập 4</h5>
+                <p class="card-text text-danger fw-bold">42.000đ</p>
+                <a href="#" class="btn btn-danger btn-sm">Thêm vào giỏ</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card product-card">
+              <img src="./img/luffy.jpg" class="card-img-top" alt="One Piece">
+              <div class="card-body">
+                <h5 class="card-title">One Piece Tập 105</h5>
+                <p class="card-text description">
+                  Một câu chuyện hấp dẫn xoay quanh cuộc phiêu lưu đầy kịch tính và bất ngờ. Cốt truyện lôi cuốn với nhiều tình tiết bất ngờ khiến bạn không thể rời mắt.
+                </p>                  
+                <p class="card-text text-danger fw-bold">50.000đ</p>
+                <p><i class="bi bi-star-fill text-warning"></i> 4.8 (300 đánh giá)</p>
+                <a href="#" class="btn btn-danger btn-sm">Thêm vào giỏ</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card product-card">
+              <img src="./img/Dragon.jpg" class="card-img-top" alt="One Piece">
+              <div class="card-body">
+                <h5 class="card-title">Dragon Ball</h5>
+                <p class="card-text description">
+                  Một câu chuyện hấp dẫn xoay quanh cuộc phiêu lưu đầy kịch tính và bất ngờ. Cốt truyện lôi cuốn với nhiều tình tiết bất ngờ khiến bạn không thể rời mắt.
+                </p>                  
+                <p class="card-text text-danger fw-bold">50.000đ</p>
+                <p><i class="bi bi-star-fill text-warning"></i> 4.8 (300 đánh giá)</p>
+                <a href="#" class="btn btn-danger btn-sm">Thêm vào giỏ</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card product-card">
+              <img src="./img/naruto.jpg" class="card-img-top" alt="One Piece">
+              <div class="card-body">
+                <h5 class="card-title">naruto</h5>
+                <p class="card-text description">
+                  Một câu chuyện hấp dẫn xoay quanh cuộc phiêu lưu đầy kịch tính và bất ngờ. Cốt truyện lôi cuốn với nhiều tình tiết bất ngờ khiến bạn không thể rời mắt.
+                </p>                  
+                <p class="card-text text-danger fw-bold">50.000đ</p>
+                <p><i class="bi bi-star-fill text-warning"></i> 4.8 (300 đánh giá)</p>
+                <a href="#" class="btn btn-danger btn-sm">Thêm vào giỏ</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Popular Tab -->
+      <div class="tab-pane fade" id="popular">
+        <div class="my-4">
+          <h3>Truyện được yêu thích</h3>
+          <div class="row mt-3">
+            <div class="col-md-3">
+              <div class="card product-card">
+                <img src="./img/luffy.jpg" class="card-img-top" alt="One Piece">
+                <div class="card-body">
+                  <h5 class="card-title">One Piece Tập 105</h5>
+                  <p class="card-text description">
+                    Một câu chuyện hấp dẫn xoay quanh cuộc phiêu lưu đầy kịch tính và bất ngờ. Cốt truyện lôi cuốn với nhiều tình tiết bất ngờ khiến bạn không thể rời mắt.
+                  </p>                  
+                  <p class="card-text text-danger fw-bold">50.000đ</p>
+                  <p><i class="bi bi-star-fill text-warning"></i> 4.8 (300 đánh giá)</p>
+                  <a href="#" class="btn btn-danger btn-sm">Thêm vào giỏ</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Products -->
+      <div class="tab-pane fade" id="new">
+        <div class="my-4">
+          <h3>Truyện mới phát hành</h3>
+          <div class="row mt-3">
+            <div class="col-md-3">
+              <div class="card product-card">
+                <div class="badge bg-danger position-absolute top-0 end-0 m-2">MỚI</div>
+                <img src="./img/Kaisen.jpg" class="card-img-top" alt="Jujutsu Kaisen">
+                <div class="card-body">
+                  <h5 class="card-title">Jujutsu Kaisen Tập 4</h5>
+                  <p class="card-text text-danger fw-bold">42.000đ</p>
+                  <a href="#" class="btn btn-danger btn-sm">Thêm vào giỏ</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sale Tab -->
+      <div class="tab-pane fade" id="sale">
+        <div class="my-4">
+          <h3>Khuyến mãi đặc biệt</h3>
+          <div class="row mt-3">
+            <div class="col-md-3">
+              <div class="card product-card">
+                <div class="badge bg-warning position-absolute top-0 end-0 m-2">-20%</div>
+                <img src="./img/Dspecial.jpg" class="card-img-top" alt="Doraemon">
+                <div class="card-body">
+                  <h5 class="card-title">Doraemon và bản giao hưởng địa cầu</h5>
+                  <p class="card-text"><del class="text-muted">60.000đ</del> <span class="text-danger fw-bold">48.000đ</span></p>
+                  <a href="#" class="btn btn-danger btn-sm">Thêm vào giỏ</a>
+                </div>
+              </div>
+            </div>
+            <!-- More sale products can go here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Footer -->
+<footer class="footer mt-5">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <h5 class="text-white">Liên hệ</h5>
+        <p class="text-white">Email: support@comiczone.vn</p>
+        <p class="text-white">SĐT: 1800-1234</p>
+      </div>
+      <div class="col-12 col-md-4">
+        <h5 class="text-white">Theo dõi chúng tôi</h5>
+        <div class="d-flex justify-content-center">
+          <a href="#" class="text-white mx-2">
+            <i class="bi bi-facebook" style="font-size: 1.5rem;"></i>
+          </a>
+          <a href="#" class="text-white mx-2">
+            <i class="bi bi-instagram" style="font-size: 1.5rem;"></i>
+          </a>
+          <a href="#" class="text-white mx-2">
+            <i class="bi bi-twitter" style="font-size: 1.5rem;"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <h5 class="text-white">Chính sách</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white">Chính sách bảo mật</a></li>
+          <li><a href="#" class="text-white">Điều khoản sử dụng</a></li>
+          <li><a href="#" class="text-white">Chính sách đổi trả</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="my-4" style="border-top: 1px solid #ffffff;">
+    <p class="text-white">&copy; 2025 ComicStore - Cửa hàng truyện tranh online hàng đầu Việt Nam</p>
+  </div>
+</footer>
+<div id="loginMessage" class="alert alert-success" style="display:none; position: absolute; top: 10px; right: 10px; z-index: 1000;"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const loginSuccess = localStorage.getItem('loginSuccess');
+    const loginMessage = localStorage.getItem('loginMessage');
+
+    console.log("Login Success: ", loginSuccess);
+    console.log("Login Message: ", loginMessage);
+
+    if (loginSuccess && loginMessage) {
+        // Hiển thị thông báo trong phần tử div
+        const messageDiv = document.getElementById('loginMessage');
+        messageDiv.textContent = "Chào mừng bạn quay lại!";  // Sửa thông báo
+        messageDiv.style.display = 'block';
+
+        // Ẩn thông báo sau 3 giây (3000 milliseconds)
+        setTimeout(function() {
+            messageDiv.style.display = 'none';
+        }, 3000);
+
+        // Xóa thông báo sau khi hiển thị
+        localStorage.removeItem('loginSuccess');
+        localStorage.removeItem('loginMessage');
+    }
+});
+document.addEventListener("DOMContentLoaded", function () {
+  const userName = localStorage.getItem('userName');
+  const loginLink = document.getElementById('loginLink');  // Liên kết "Đăng nhập"
+  const loginLinkItem = document.getElementById('loginLinkItem');  // Mục menu đăng nhập
+  const userDropdown = document.getElementById('userDropdown');  // Dropdown cho người dùng
+  const userNameLink = document.getElementById('userNameLink');  // Tên người dùng trong dropdown
+  const logoutLink = document.getElementById('logoutLink');  // Liên kết đăng xuất
+
+  // Nếu người dùng đã đăng nhập
+  if (userName) {
+      // Thay thế "Đăng nhập" bằng tên người dùng và hiển thị dropdown
+      loginLinkItem.style.display = 'none';  // Ẩn mục đăng nhập
+      userDropdown.style.display = 'block';  // Hiển thị dropdown
+
+      // Cập nhật tên người dùng trong dropdown
+      userNameLink.textContent = userName;
+
+      // Xử lý đăng xuất
+      logoutLink.addEventListener('click', function() {
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userEmail');
+          localStorage.removeItem('loginSuccess');
+          localStorage.removeItem('loginMessage');
+          location.reload();  // Tải lại trang để quay lại trạng thái ban đầu
+      });
+  }
+});
+
+</script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
