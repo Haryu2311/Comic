@@ -74,7 +74,7 @@ const loginUser = async (req, res) => {
             success: true,
             message: 'Đăng nhập thành công',
             user: { id: user._id, email: user.email, name: user.name }, // Đảm bảo trả về name
-            redirectUrl: '/FE/Home.html' // FE sẽ dùng URL này để chuyển hướng
+            redirectUrl: 'http://comicstore.lovestoblog.com/' // FE sẽ dùng URL này để chuyển hướng
         });
 
     } catch (error) {
